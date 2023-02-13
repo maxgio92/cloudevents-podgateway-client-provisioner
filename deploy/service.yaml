@@ -1,0 +1,39 @@
+---
+# Knative Eventing Trigger to trigger the client service
+apiVersion: eventing.knative.dev/v1
+kind: Trigger
+metadata:
+  name: client
+  namespace: client-system
+spec:
+  broker: default
+  filter:
+    attributes:
+      type: io.podgateway.client.pending
+  subscriber:
+    ref:
+      apiVersion: serving.knative.dev/v1
+      kind: Service
+      name: client-provisioner
+---
+# This will be the subscriber for the Trigger
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: client-provisioner
+  namespace: client-system
+spec:
+  template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/min-scale: "0"
+    spec:
+      serviceAccountName: provisioner
+      containers:
+        - image: quay.io/maxgio92/cloudevents-podgateway-client-provisioner:0.1.3
+          imagePullPolicy: Always
+          args:
+            - --client-namespace=client-system
+            - --client-image=alpine/curl
+            - --client-command="sleep"
+            - --client-command="infinity"

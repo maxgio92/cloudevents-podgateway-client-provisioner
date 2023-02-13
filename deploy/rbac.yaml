@@ -1,0 +1,18 @@
+apiVersion:  rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: provisioner-admin
+subjects:
+- kind: ServiceAccount
+  name: provisioner
+  namespace: client-system
+roleRef:
+  kind: ClusterRole
+  name: admin
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: provisioner
+  namespace: client-system
