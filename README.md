@@ -62,15 +62,10 @@ kn quickstart kind
 
 Deploy pod-gateways (e.g. named `foo` and `bar`):
 
-> NOTE: https://github.com/angelnu/helm-charts/pull/49 needs to be merged before using the official `angelnu/pod-gateway` Helm chart. In the meantime the forked [pod-gateway](https://github.com/maxgio92/helm-charts/tree/issue/48/charts/apps/pod-gateway) chart supports it.
-
 ```shell
-tmpdir=$(mktemp -d)
-git clone git@github.com:maxgio92/helm-charts.git $tmpdir
-git -C $tmpdir checkout issue/48
-helm dependency build $tmpdir/charts/apps/pod-gateway
-helm upgrade --install -n gateway-system --create-namespace pod-gateway-foo $tmpdir/charts/apps/pod-gateway -f $deploydir/pod-gateway-foo-values.yaml
-helm upgrade --install -n gateway-system --create-namespace pod-gateway-bar $tmpdir/charts/apps/pod-gateway -f $deploydir/pod-gateway-bar-values.yaml
+
+helm upgrade --install -n gateway-system --create-namespace pod-gateway-foo angelnu/pod-gateway -f $deploydir/pod-gateway-foo-values.yaml --version 6.1.0
+helm upgrade --install -n gateway-system --create-namespace pod-gateway-bar angelnu/pod-gateway -f $deploydir/pod-gateway-bar-values.yaml --version 6.1.0
 ```
 
 Deploy a Knative Broker for the CloudEvents:

@@ -20,11 +20,6 @@ settings:
 # that connect to the gateway pod created by this chart.
 # @default -- See below
 webhook:
-  image:
-    # -- image repository of the webhook
-    repository: quay.io/maxgio92/gateway-admission-controller
-    # -- image tag of the webhook
-    tag: v3.7.1-alpha-issue102
 
   # -- default behviour for new PODs in the evaluated namespace
   gatewayDefault: false
